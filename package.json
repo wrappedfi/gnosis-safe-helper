@@ -1,7 +1,7 @@
 {
   "name": "gnosis-safe-helper",
   "version": "0.1.0",
-  "description": "",
+  "description": "Library for programmatic administration of a Gnosis Safe",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "files": [
@@ -16,8 +16,13 @@
     "format": "prettier 'src/**/*.ts' --write",
     "test": "tsc -p tsconfig-cjs.json && ava"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "author": "youfoundron (https://github.com/youfoundron)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youfoundron/gnosis-safe-helper.git"
+  },
+  "keywords": ["gnosis", "safe", "client", "web3", "ethereum"],
   "devDependencies": {
     "@ava/typescript": "^3.0.1",
     "@gnosis.pm/safe-core-sdk-types": "^1.1.0",
