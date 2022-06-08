@@ -178,7 +178,11 @@ export class SafeHelper {
     return safeTx;
   }
 
-  async proposeTransaction(safeTx: SafeTransaction, key?: string) {
+  async proposeTransaction(
+    args: { safeTx: SafeTransaction; origin?: string },
+    key?: string
+  ) {
+    const { safeTx, origin } = args;
     const safe = await this._getSafeClient(key);
     const signer = this._resolveSigner(key);
     const safeTxHash = await safe.getTransactionHash(safeTx);
@@ -187,7 +191,7 @@ export class SafeHelper {
       safeTransaction: safeTx,
       safeTxHash,
       senderAddress: signer.address,
-      origin: "SafeHelper",
+      ...(origin ? { origin } : {}),
     };
     const txService = this._getTxServiceClient(key);
     await txService.proposeTransaction(transactionConfig);
@@ -195,13 +199,14 @@ export class SafeHelper {
   }
 
   async createAndProposeSignedTransaction(
-    transaction: SafeTransactionDataPartial,
+    args: { transaction: SafeTransactionDataPartial; origin?: string },
     creatorKey?: string,
     proposerKey?: string
   ) {
+    const { transaction, origin } = args;
     const safeTx = await this.createSignedTransaction(transaction, creatorKey);
     const safeTxHash = await this.proposeTransaction(
-      safeTx,
+      { safeTx, origin },
       proposerKey || creatorKey
     );
     return safeTxHash;

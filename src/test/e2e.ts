@@ -66,7 +66,7 @@ test("e2e", async (t) => {
 
   // Propose transaction (delegate)
   const safeTxHash = await safeHelper.proposeTransaction(
-    safeTx,
+    { safeTx, origin: "Sent via GnosisSafeHelper" },
     delegateSigner.privateKey
   );
   console.debug("Proposed safeTx:", safeTxHash);
