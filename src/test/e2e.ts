@@ -45,17 +45,20 @@ test.beforeEach(async () => {
 });
 
 test("e2e", async (t) => {
+  // Specify test timeout
   t.timeout(120000); // 2 minutes
+
+  // Set delegate address
   await safeHelper.addDelegate({
     label: "Temporary Delegate",
     delegate: delegateSigner.address,
   });
 
-  // Structure the transaction
+  // Structure transaction
   const safeTx = await safeHelper.createTransaction(
     {
-      to: "0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF",
-      value: ethers.utils.parseUnits("0.000666").toString(),
+      to: "0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF", // weird "f" address
+      value: ethers.utils.parseUnits("0.000666").toString(), // spooky amount
       data: "0x", // empty data... i think?
     },
     delegateSigner.privateKey
