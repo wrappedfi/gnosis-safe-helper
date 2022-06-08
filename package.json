@@ -1,0 +1,46 @@
+{
+  "name": "gnosis-safe-helper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier 'src/**/*.ts' --write",
+    "test": "ava"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@ava/typescript": "^3.0.1",
+    "@gnosis.pm/safe-core-sdk-types": "^1.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "ava": "^4.3.0",
+    "dotenv": "^16.0.1",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.7.3"
+  },
+  "dependencies": {
+    "@gnosis.pm/safe-core-sdk": "^2.1.0",
+    "@gnosis.pm/safe-ethers-adapters": "0.1.0-alpha.9",
+    "@gnosis.pm/safe-ethers-lib": "^1.1.0",
+    "@gnosis.pm/safe-service-client": "^1.1.2",
+    "ethers": "^5.6.8"
+  },
+  "ava": {
+    "typescript": {
+      "extensions": [
+        "ts"
+      ],
+      "rewritePaths": {
+        "src/": "dist/"
+      },
+      "compile": "tsc"
+    },
+    "concurrency": 1
+  }
+}
