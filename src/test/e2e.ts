@@ -62,7 +62,10 @@ test("e2e", async (t) => {
   );
 
   // Propose transaction (delegate)
-  const safeTxHash = await safeHelper.proposeTransaction(safeTx);
+  const safeTxHash = await safeHelper.proposeTransaction(
+    safeTx,
+    delegateSigner.privateKey
+  );
   console.debug("Proposed safeTx:", safeTxHash);
 
   // Give 1st approval (owner 1)
