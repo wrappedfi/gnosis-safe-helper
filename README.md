@@ -4,15 +4,17 @@ A library for programmatic administration of a [Gnosis Safe](https://gnosis-safe
 
 ## Installation
 
-Install from package manager
+Install using your package manager of choice.
 
 ```bash
 $ npm install gnosis-safe-helper
+OR
+$ yarn add gnosis-safe-helper
 ```
 
 ## Usage
 
-Below is an example of how one might use `SafeHelper` on a **2 of n** safe with a [delegate key](https://help.gnosis-safe.io/en/articles/5809867-what-is-a-delegate-key).
+Below is an example of how to create, approve, and execute a transaction on a `2 of n` Safe. It is assumed that the safe has a [delegate key](https://help.gnosis-safe.io/en/articles/5809867-what-is-a-delegate-key) and two owner keys.
 
 ```typescript
 import { SafeHelper } from "gnosis-safe-helper";
