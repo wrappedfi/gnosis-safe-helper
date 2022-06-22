@@ -1,6 +1,6 @@
 {
   "name": "gnosis-safe-helper",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Library for programmatic administration of a Gnosis Safe",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
