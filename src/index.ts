@@ -150,8 +150,10 @@ export class SafeHelper {
     return true;
   }
 
-  async getPendingTransactions(): Promise<SafeMultisigTransactionResponse[]> {
-    const serviceClient = this._getTxServiceClient();
+  async getPendingTransactions(
+    key?: string
+  ): Promise<SafeMultisigTransactionResponse[]> {
+    const serviceClient = this._getTxServiceClient(key);
     const pendingSafeTransactionListResponse =
       await serviceClient.getPendingTransactions(this.safeAddress);
     return pendingSafeTransactionListResponse.results;
@@ -216,7 +218,7 @@ export class SafeHelper {
     safeTxHash: string,
     key?: string
   ): Promise<string> {
-    const pendingTransactions = await this.getPendingTransactions();
+    const pendingTransactions = await this.getPendingTransactions(key);
     const indexOfPendingTx = pendingTransactions.findIndex(
       (entry: SafeMultisigTransactionResponse) =>
         entry.safeTxHash === safeTxHash
@@ -240,7 +242,7 @@ export class SafeHelper {
 
   async executeTransaction(safeTxHash: string, key?: string) {
     const safe = await this._getSafeClient(key);
-    const pendingTransactions = await this.getPendingTransactions();
+    const pendingTransactions = await this.getPendingTransactions(key);
     const indexOfPendingTx = pendingTransactions.findIndex(
       (entry: SafeMultisigTransactionResponse) =>
         entry.safeTxHash === safeTxHash

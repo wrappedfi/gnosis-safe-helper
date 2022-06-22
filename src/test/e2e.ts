@@ -40,8 +40,7 @@ test.before(async () => {
 });
 
 test.beforeEach(async () => {
-  safeHelper.setDefaultSignerKey(primarySigner.privateKey);
-  await safeHelper.removeAllDelegates();
+  await safeHelper.removeAllDelegates(primarySigner.privateKey);
 });
 
 test("e2e", async (t) => {
@@ -49,10 +48,13 @@ test("e2e", async (t) => {
   t.timeout(120000); // 2 minutes
 
   // Set delegate address
-  await safeHelper.addDelegate({
-    label: "Temporary Delegate",
-    delegate: delegateSigner.address,
-  });
+  await safeHelper.addDelegate(
+    {
+      label: "Temporary Delegate",
+      delegate: delegateSigner.address,
+    },
+    primarySigner.privateKey
+  );
 
   // Structure transaction
   const safeTx = await safeHelper.createTransaction(
