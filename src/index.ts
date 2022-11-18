@@ -35,7 +35,7 @@ export class SafeHelper {
       // set defaults
       {
         txServiceUrl: isTesting
-          ? "https://safe-transaction.rinkeby.gnosis.io"
+          ? "https://safe-transaction.goerli.gnosis.io"
           : "https://safe-transaction.gnosis.io/api/v1",
       },
       // override defaults
@@ -45,7 +45,7 @@ export class SafeHelper {
     this.safeAddress = safeAddress;
     this.provider = normalizedOptions?.providerUrl
       ? ethers.getDefaultProvider(normalizedOptions.providerUrl)
-      : ethers.getDefaultProvider(isTesting ? "rinkeby" : "mainnet");
+      : ethers.getDefaultProvider(isTesting ? "goerli" : "mainnet");
     this.txServiceUrl = normalizedOptions.txServiceUrl;
     this.service = new SafeService(this.txServiceUrl);
   }
