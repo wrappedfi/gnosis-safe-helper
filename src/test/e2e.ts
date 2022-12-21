@@ -20,7 +20,7 @@ test.before(async () => {
   safeHelper = new SafeHelper(safeAddress, {
     testing: true,
     providerUrl: process.env.RPC_URL,
-    txServiceUrl: "https://safe-transaction.rinkeby.gnosis.io",
+    txServiceUrl: "https://safe-transaction.goerli.gnosis.io",
   });
 
   if (!process.env.OWNER_1_PRIVATE_KEY) {
