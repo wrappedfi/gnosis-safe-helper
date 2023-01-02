@@ -22,10 +22,16 @@
     "type": "git",
     "url": "git+https://github.com/youfoundron/gnosis-safe-helper.git"
   },
-  "keywords": ["gnosis", "safe", "client", "web3", "ethereum"],
+  "keywords": [
+    "gnosis",
+    "safe",
+    "client",
+    "web3",
+    "ethereum"
+  ],
   "devDependencies": {
     "@ava/typescript": "^3.0.1",
-    "@gnosis.pm/safe-core-sdk-types": "^1.1.0",
+    "@safe-global/safe-core-sdk-types": "^1.8.0",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "ava": "^4.3.0",
@@ -37,10 +43,10 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@gnosis.pm/safe-core-sdk": "^2.1.0",
-    "@gnosis.pm/safe-ethers-adapters": "0.1.0-alpha.9",
-    "@gnosis.pm/safe-ethers-lib": "^1.1.0",
-    "@gnosis.pm/safe-service-client": "^1.1.2",
+    "@safe-global/safe-core-sdk": "^3.2.2",
+    "@safe-global/safe-ethers-adapters": "^0.1.0-alpha.15",
+    "@safe-global/safe-ethers-lib": "^1.8.0",
+    "@safe-global/safe-service-client": "^1.5.0",
     "ethers": "^5.6.8"
   },
   "ava": {

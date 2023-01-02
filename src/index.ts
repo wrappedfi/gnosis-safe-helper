@@ -1,12 +1,11 @@
-import Safe, { SafeTransactionOptionalProps } from "@gnosis.pm/safe-core-sdk";
-import EthersAdapter from "@gnosis.pm/safe-ethers-lib";
-import { SafeEthersSigner, SafeService } from "@gnosis.pm/safe-ethers-adapters";
+import Safe, { SafeTransactionOptionalProps } from "@safe-global/safe-core-sdk";
+import EthersAdapter from "@safe-global/safe-ethers-lib";
+import { SafeEthersSigner, SafeService } from "@safe-global/safe-ethers-adapters";
 import SafeServiceClient, {
   ProposeTransactionProps,
   SafeDelegateConfig,
   SafeDelegateResponse,
-  SafeMultisigTransactionResponse,
-} from "@gnosis.pm/safe-service-client";
+} from "@safe-global/safe-service-client";
 
 import * as ethers from "ethers";
 import { Provider } from "@ethersproject/abstract-provider";
@@ -14,7 +13,8 @@ import {
   MetaTransactionData,
   SafeTransaction,
   SafeTransactionDataPartial,
-} from "@gnosis.pm/safe-core-sdk-types";
+  SafeMultisigTransactionResponse
+} from "@safe-global/safe-core-sdk-types";
 
 interface SafeHelperOptions {
   testing?: boolean;
@@ -69,8 +69,8 @@ export class SafeHelper {
   }
 
   _getEthAdapter(key?: string) {
-    const signer = this._resolveSigner(key);
-    const ethAdapter = new EthersAdapter({ ethers, signer });
+    const signerOrProvider = this._resolveSigner(key);
+    const ethAdapter = new EthersAdapter({ ethers, signerOrProvider });
     return ethAdapter;
   }
 
@@ -160,11 +160,11 @@ export class SafeHelper {
   }
 
   async createTransaction(
-    transaction: SafeTransactionDataPartial,
+    safeTransactionData: SafeTransactionDataPartial,
     key?: string
   ): Promise<SafeTransaction> {
     const safe = await this._getSafeClient(key);
-    const safeTx = await safe.createTransaction(transaction);
+    const safeTx = await safe.createTransaction({safeTransactionData});
     return safeTx;
   }
 
@@ -188,11 +188,13 @@ export class SafeHelper {
     const safe = await this._getSafeClient(key);
     const signer = this._resolveSigner(key);
     const safeTxHash = await safe.getTransactionHash(safeTx);
+    const safeHashSig = await safe.signTransactionHash(safeTxHash);
     const transactionConfig: ProposeTransactionProps = {
       safeAddress: this.safeAddress,
-      safeTransaction: safeTx,
+      safeTransactionData: safeTx.data,
       safeTxHash,
       senderAddress: signer.address,
+      senderSignature: safeHashSig.data,
       ...(origin ? { origin } : {}),
     };
     const txService = this._getTxServiceClient(key);
@@ -217,7 +219,7 @@ export class SafeHelper {
   async createRejectionTransaction(
     safeTxHash: string,
     key?: string
-  ): Promise<string> {
+  ): Promise<SafeTransaction> {
     const pendingTransactions = await this.getPendingTransactions(key);
     const indexOfPendingTx = pendingTransactions.findIndex(
       (entry: SafeMultisigTransactionResponse) =>
@@ -231,8 +233,7 @@ export class SafeHelper {
     const rejectSafeTx = await safe.createRejectionTransaction(
       safeTxToReject.nonce
     );
-    const rejectSafeTxHash = await safe.getTransactionHash(rejectSafeTx);
-    return rejectSafeTxHash;
+    return rejectSafeTx;
   }
 
   async approveTransaction(safeTxHash: string, key?: string) {
@@ -252,7 +253,7 @@ export class SafeHelper {
     }
     const { to, data, value, operation, ...options } =
       pendingTransactions[indexOfPendingTx];
-    const transactionData: MetaTransactionData = {
+    const safeTransactionData: MetaTransactionData = {
       to,
       data: data || "0x",
       value,
@@ -262,10 +263,10 @@ export class SafeHelper {
       ...options,
       gasPrice: Number(options.gasPrice),
     };
-    const safeTx = await safe.createTransaction(
-      [transactionData],
-      optionalProps
-    );
+    const safeTx = await safe.createTransaction({
+      safeTransactionData,
+      options: optionalProps
+    });
     return safe.executeTransaction(safeTx);
   }
 }
