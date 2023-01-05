@@ -251,22 +251,8 @@ export class SafeHelper {
     if (indexOfPendingTx === -1) {
       throw new Error(`No safe transaction found with hash ${safeTxHash}`);
     }
-    const { to, data, value, operation, ...options } =
-      pendingTransactions[indexOfPendingTx];
-    const safeTransactionData: MetaTransactionData = {
-      to,
-      data: data || "0x",
-      value,
-      operation,
-    };
-    const optionalProps: SafeTransactionOptionalProps = {
-      ...options,
-      gasPrice: Number(options.gasPrice),
-    };
-    const safeTx = await safe.createTransaction({
-      safeTransactionData,
-      options: optionalProps
-    });
+
+    const safeTx = await this._getTxServiceClient(key).getTransaction(safeTxHash);
     return safe.executeTransaction(safeTx);
   }
 }
